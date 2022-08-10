@@ -13,11 +13,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import cl.mobdev.challege.rickandmorty.core.entities.CharacterEntity;
-import cl.mobdev.challege.rickandmorty.datasources.http.CharacterClientRest;
-import cl.mobdev.challege.rickandmorty.datasources.http.LocationClientRest;
-import cl.mobdev.challege.rickandmorty.datasources.http.models.CharacterModel;
-import cl.mobdev.challege.rickandmorty.datasources.http.models.LocationModel;
+import cl.mobdev.challege.rickandmorty.character.domain.Character;
+import cl.mobdev.challege.rickandmorty.character.infrastructure.http.CharacterClient;
+import cl.mobdev.challege.rickandmorty.character.infrastructure.http.LocationClient;
+import cl.mobdev.challege.rickandmorty.character.infrastructure.http.models.CharacterModel;
+import cl.mobdev.challege.rickandmorty.character.infrastructure.http.models.LocationModel;
 import feign.FeignException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,13 +34,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @AutoConfigureMockMvc
 @SpringBootTest
-public class RickyAndMartinControllerTest {
+public class CharacterControllerTest {
 
-    private final Logger logger = LoggerFactory.getLogger (RickyAndMartinControllerTest.class);
+    private final Logger logger = LoggerFactory.getLogger (CharacterControllerTest.class);
     public static final String API_PATH_ROLE = "/api/v1/character/";
     public static final ObjectMapper JSON_MAPPER = new ObjectMapper(new JsonFactory());
      
-    public RickyAndMartinControllerTest () {
+    public CharacterControllerTest () {
         JSON_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }  
 
@@ -48,10 +48,10 @@ public class RickyAndMartinControllerTest {
     private MockMvc mvc;
 
     @MockBean
-    private LocationClientRest lClientRest;
+    private LocationClient lClientRest;
 
     @MockBean
-    private CharacterClientRest cClientRest;
+    private CharacterClient cClientRest;
 
     private class TestErrorException extends FeignException {
         public TestErrorException (int status, String message){
@@ -65,7 +65,7 @@ public class RickyAndMartinControllerTest {
         logger.debug (info.getDisplayName ());
 
         InputStream inps = this.getClass ().getResourceAsStream ("/rs/entity/character.json");
-        CharacterEntity rsExpect = JSON_MAPPER.readValue (inps, CharacterEntity.class);
+        Character rsExpect = JSON_MAPPER.readValue (inps, Character.class);
 
         inps = this.getClass ().getResourceAsStream ("/rs/model/location-model.json");
         LocationModel locationRs = JSON_MAPPER.readValue (inps, LocationModel.class);
@@ -84,7 +84,7 @@ public class RickyAndMartinControllerTest {
                         .andReturn ();
 
         byte[] contentAsByteArray = mvcResult.getResponse ().getContentAsByteArray ();
-        CharacterEntity character = JSON_MAPPER.readValue (contentAsByteArray, CharacterEntity.class);
+        Character character = JSON_MAPPER.readValue (contentAsByteArray, Character.class);
        
         assertEquals(rsExpect, character);
         Mockito.verify(cClientRest).get(Mockito.eq(1));

@@ -1,24 +1,24 @@
-package cl.mobdev.challege.rickandmorty.datasources;
+package cl.mobdev.challege.rickandmorty.character.infrastructure;
 
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cl.mobdev.challege.rickandmorty.core.entities.OriginEntity;
-import cl.mobdev.challege.rickandmorty.core.ports.OriginPort;
-import cl.mobdev.challege.rickandmorty.datasources.http.LocationClientRest;
-import cl.mobdev.challege.rickandmorty.datasources.http.models.LocationModel;
+import cl.mobdev.challege.rickandmorty.character.domain.CharacterOrigin;
+import cl.mobdev.challege.rickandmorty.character.domain.CharacterOriginRepository;
+import cl.mobdev.challege.rickandmorty.character.infrastructure.http.LocationClient;
+import cl.mobdev.challege.rickandmorty.character.infrastructure.http.models.LocationModel;
 import feign.FeignException;
 
 @Service
-public class LocationHttpDataSource implements OriginPort{
+public class CharacterOriginHttpRepository implements CharacterOriginRepository{
 
     @Autowired
-    private LocationClientRest lClientRest;
+    private LocationClient lClientRest;
 
     @Override
-    public OriginEntity get(Integer id) throws NoSuchElementException {
+    public CharacterOrigin get(Integer id) throws NoSuchElementException {
         LocationModel lm;
         try {
             lm = lClientRest.get(id);

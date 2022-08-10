@@ -1,9 +1,9 @@
-package cl.mobdev.challege.rickandmorty.datasources.http.models;
+package cl.mobdev.challege.rickandmorty.character.infrastructure.http.models;
 
 import java.util.Date;
 
-import cl.mobdev.challege.rickandmorty.core.entities.CharacterEntity;
-import cl.mobdev.challege.rickandmorty.core.entities.OriginEntity;
+import cl.mobdev.challege.rickandmorty.character.domain.Character;
+import cl.mobdev.challege.rickandmorty.character.domain.CharacterOrigin;
 
 @lombok.Getter
 @lombok.AllArgsConstructor
@@ -26,8 +26,8 @@ public class CharacterModel {
     private Date    created;
 
 
-    public CharacterEntity toCharacterEntity (OriginEntity o) {
-       return  CharacterEntity
+    public Character toCharacterEntity (CharacterOrigin o) {
+       return  Character
                 .builder()
                     .id(this.id)
                     .name(this.name)

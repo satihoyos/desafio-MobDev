@@ -1,4 +1,4 @@
-package cl.mobdev.challege.rickandmorty.datasources.http.models;
+package cl.mobdev.challege.rickandmorty.character.infrastructure.http.models;
 
 @lombok.Getter
 @lombok.AllArgsConstructor

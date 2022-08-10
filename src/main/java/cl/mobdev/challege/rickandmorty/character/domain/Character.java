@@ -1,4 +1,4 @@
-package cl.mobdev.challege.rickandmorty.core.entities;
+package cl.mobdev.challege.rickandmorty.character.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @lombok.EqualsAndHashCode
 @lombok.ToString
 @lombok.Builder(toBuilder=true)
-public class CharacterEntity {
+public class Character {
     private Integer id;
     private String name;
     private String status;
@@ -16,5 +16,5 @@ public class CharacterEntity {
     private String type;
     @JsonProperty("episode_count")
     private Integer episodeCount;    
-    private OriginEntity origin; 
+    private CharacterOrigin origin; 
 }

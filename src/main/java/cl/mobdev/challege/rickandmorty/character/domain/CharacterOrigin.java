@@ -1,4 +1,4 @@
-package cl.mobdev.challege.rickandmorty.core.entities;
+package cl.mobdev.challege.rickandmorty.character.domain;
 
 @lombok.Getter
 @lombok.AllArgsConstructor
@@ -6,7 +6,7 @@ package cl.mobdev.challege.rickandmorty.core.entities;
 @lombok.EqualsAndHashCode
 @lombok.ToString
 @lombok.Builder(toBuilder=true)
-public class OriginEntity {
+public class CharacterOrigin {
     private String name;
     private String url;
     private String dimension;

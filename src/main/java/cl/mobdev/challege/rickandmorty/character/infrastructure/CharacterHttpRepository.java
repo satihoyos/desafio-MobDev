@@ -1,4 +1,4 @@
-package cl.mobdev.challege.rickandmorty.datasources;
+package cl.mobdev.challege.rickandmorty.character.infrastructure;
 
 import java.util.NoSuchElementException;
 import java.util.function.Function;
@@ -6,21 +6,21 @@ import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cl.mobdev.challege.rickandmorty.core.entities.CharacterEntity;
-import cl.mobdev.challege.rickandmorty.core.entities.OriginEntity;
-import cl.mobdev.challege.rickandmorty.core.ports.CharacterPort;
-import cl.mobdev.challege.rickandmorty.datasources.http.CharacterClientRest;
-import cl.mobdev.challege.rickandmorty.datasources.http.models.CharacterModel;
+import cl.mobdev.challege.rickandmorty.character.domain.Character;
+import cl.mobdev.challege.rickandmorty.character.domain.CharacterOrigin;
+import cl.mobdev.challege.rickandmorty.character.domain.CharacterRepository;
+import cl.mobdev.challege.rickandmorty.character.infrastructure.http.CharacterClient;
+import cl.mobdev.challege.rickandmorty.character.infrastructure.http.models.CharacterModel;
 import feign.FeignException;
 
 @Service
-public class CharacterHttpDataSource implements CharacterPort{
+public class CharacterHttpRepository implements CharacterRepository{
 
     @Autowired
-    private CharacterClientRest cClientRest;
+    private CharacterClient cClientRest;
 
     @Override
-    public CharacterEntity get(Integer id, Function<Integer, OriginEntity> getOrigin) throws NoSuchElementException {
+    public Character get(Integer id, Function<Integer, CharacterOrigin> getOrigin) throws NoSuchElementException {
         CharacterModel cModel;
 
         try {
@@ -34,7 +34,7 @@ public class CharacterHttpDataSource implements CharacterPort{
         }
         
         String idLocation = cModel.getOrigin().getUrl().split("location/")[1];
-        OriginEntity o= getOrigin.apply(Integer.parseInt(idLocation));
+        CharacterOrigin o= getOrigin.apply(Integer.parseInt(idLocation));
         return cModel.toCharacterEntity(o);
     }
     

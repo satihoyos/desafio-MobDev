@@ -1,4 +1,4 @@
-package cl.mobdev.challege.rickandmorty.controllers;
+package cl.mobdev.challege.rickandmorty.shared;
 
 import java.util.Date;
 import java.util.HashMap;

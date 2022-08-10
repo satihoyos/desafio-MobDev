@@ -1,8 +1,8 @@
-package cl.mobdev.challege.rickandmorty.datasources.http.models;
+package cl.mobdev.challege.rickandmorty.character.infrastructure.http.models;
 
 import java.util.Date;
 
-import cl.mobdev.challege.rickandmorty.core.entities.OriginEntity;
+import cl.mobdev.challege.rickandmorty.character.domain.CharacterOrigin;
 
 @lombok.Getter
 @lombok.AllArgsConstructor
@@ -19,8 +19,8 @@ public class LocationModel {
     private String url;
     private Date created;
 
-    public OriginEntity toOriginEntity () {
-        return OriginEntity
+    public CharacterOrigin toOriginEntity () {
+        return CharacterOrigin
                 .builder()
                     .name(this.name)
                     .url(this.url)
