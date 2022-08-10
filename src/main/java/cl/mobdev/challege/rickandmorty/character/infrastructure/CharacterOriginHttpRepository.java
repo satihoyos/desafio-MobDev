@@ -14,8 +14,12 @@ import feign.FeignException;
 @Service
 public class CharacterOriginHttpRepository implements CharacterOriginRepository{
 
-    @Autowired
     private LocationClient lClientRest;
+
+    @Autowired
+    public CharacterOriginHttpRepository(LocationClient lClientRest) {
+        this.lClientRest = lClientRest;
+    }
 
     @Override
     public CharacterOrigin get(Integer id) throws NoSuchElementException {

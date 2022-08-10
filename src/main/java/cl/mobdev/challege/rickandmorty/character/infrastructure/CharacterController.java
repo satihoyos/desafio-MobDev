@@ -13,11 +13,15 @@ import cl.mobdev.challege.rickandmorty.character.application.search.SearchCharac
 @RequestMapping(value="/api/v1")
 public class CharacterController {
 
+    private SearchCharacterById searchCharacterById;
+
     @Autowired
-    private SearchCharacterById getCharacter;
+    public CharacterController (SearchCharacterById searchCharacterById) {
+        this.searchCharacterById = searchCharacterById;
+    }
     
     @GetMapping("/character/{id}")
     public ResponseEntity<?> getCharacterById (@PathVariable Integer id ) {
-        return ResponseEntity.ok(this.getCharacter.getById(id));
+        return ResponseEntity.ok(this.searchCharacterById.getById(id));
     }    
 }

@@ -16,8 +16,12 @@ import feign.FeignException;
 @Service
 public class CharacterHttpRepository implements CharacterRepository{
 
-    @Autowired
     private CharacterClient cClientRest;
+
+    @Autowired
+    public CharacterHttpRepository(CharacterClient cClientRest) {
+        this.cClientRest = cClientRest;
+    }
 
     @Override
     public Character get(Integer id, Function<Integer, CharacterOrigin> getOrigin) throws NoSuchElementException {
