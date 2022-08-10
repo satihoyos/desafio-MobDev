@@ -21,18 +21,19 @@ public class GlobalExceptionHandler  extends ResponseEntityExceptionHandler{
             .body(this.buildErrorObject(HttpStatus.NOT_FOUND, exception.getMessage()));
     }
 
-    @ExceptionHandler(InternalError.class)
-    public ResponseEntity<Map<String,Object>> InternalError(InternalError exception) {
-        return ResponseEntity
-            .status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(this.buildErrorObject(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage()));
-    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String,Object>> Exception(InternalError exception) {
         return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(this.buildErrorObject(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage()));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Map<String,Object>> IllegalArgumentException (IllegalArgumentException exception) {
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(this.buildErrorObject(HttpStatus.BAD_REQUEST, exception.getMessage()));
     }
 
     private Map<String,Object> buildErrorObject (HttpStatus status, String message) {

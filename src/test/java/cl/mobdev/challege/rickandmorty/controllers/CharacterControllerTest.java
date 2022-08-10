@@ -131,4 +131,71 @@ public class CharacterControllerTest {
         Mockito.verify(cClientRest).get(Mockito.eq(1000));
         Mockito.verify(lClientRest).get(Mockito.eq(1));
     }
+
+    @Test
+    public void obtener_character_WHEN_id_eq_10_y_character_no_tiene_url_origin_DEBE_retornar_character_sin_location (TestInfo info) throws Exception {
+        InputStream inps = this.getClass ().getResourceAsStream ("/rs/entity/character-sin-origin.json");
+        Character rsExpect = JSON_MAPPER.readValue (inps, Character.class);
+       
+        inps = this.getClass ().getResourceAsStream ("/rs/model/character-sin-url-origin.json");
+        CharacterModel characterModel = JSON_MAPPER.readValue (inps, CharacterModel.class);
+        Mockito.reset(cClientRest,lClientRest);
+        Mockito.doReturn(characterModel ).when(cClientRest).get(Mockito.eq(10));
+
+        MvcResult mvcResult = mvc.perform (get (API_PATH_ROLE.concat("10"))
+                        .contentType (MediaType.APPLICATION_JSON)
+                        .accept (MediaType.APPLICATION_JSON))
+                        .andExpect (status ().isOk())
+                        .andReturn ();
+
+        byte[] contentAsByteArray = mvcResult.getResponse ().getContentAsByteArray ();
+        Character character = JSON_MAPPER.readValue (contentAsByteArray, Character.class);
+        
+        assertEquals(rsExpect, character);
+        Mockito.verify(cClientRest).get(Mockito.eq(10));
+        
+    }
+
+    @Test
+    public void obtener_character_WHEN_id_eq_10_y_character_no_tiene_origin_DEBE_retornar_character_sin_origin (TestInfo info) throws Exception {
+        InputStream inps = this.getClass ().getResourceAsStream ("/rs/entity/character-sin-origin.json");
+        Character rsExpect = JSON_MAPPER.readValue (inps, Character.class);
+        
+        inps = this.getClass ().getResourceAsStream ("/rs/model/character-sin-origin.json");
+        CharacterModel characterModel = JSON_MAPPER.readValue (inps, CharacterModel.class);
+        Mockito.reset(cClientRest,lClientRest);
+        Mockito.doReturn(characterModel ).when(cClientRest).get(Mockito.eq(10));
+
+        MvcResult mvcResult = mvc.perform (get (API_PATH_ROLE.concat("10"))
+                        .contentType (MediaType.APPLICATION_JSON)
+                        .accept (MediaType.APPLICATION_JSON))
+                        .andExpect (status ().isOk())
+                        .andReturn ();
+
+        byte[] contentAsByteArray = mvcResult.getResponse ().getContentAsByteArray ();
+        Character character = JSON_MAPPER.readValue (contentAsByteArray, Character.class);
+        
+        assertEquals(rsExpect, character);
+        Mockito.verify(cClientRest).get(Mockito.eq(10));
+    }
+
+    @Test
+    public void obtener_character_WHEN_id_eq_1_y_location_tiene_id_no_valido_DEBE_retornar_BAD_REQUEST(TestInfo info) throws Exception {
+        InputStream inps = this.getClass ().getResourceAsStream ("/rs/model/character-url-origin-bad-id.json");
+        CharacterModel characterModel = JSON_MAPPER.readValue (inps, CharacterModel.class);
+        Mockito.reset(cClientRest,lClientRest);
+        Mockito.doReturn(characterModel ).when(cClientRest).get(Mockito.eq(10));
+
+        MvcResult mvcResult = mvc.perform (get (API_PATH_ROLE.concat("10"))
+                        .contentType (MediaType.APPLICATION_JSON)
+                        .accept (MediaType.APPLICATION_JSON))
+                        .andExpect (status ().isBadRequest())
+                        .andReturn ();
+
+        byte[] contentAsByteArray = mvcResult.getResponse ().getContentAsByteArray ();
+        JsonNode error = JSON_MAPPER.readValue (contentAsByteArray, JsonNode.class);
+        assertEquals("Bad Request", error.get("error").asText());
+        assertEquals("Character's location id no es numérico", error.get("message").asText());
+        Mockito.verify(cClientRest).get(Mockito.eq(10));        
+    }
 }

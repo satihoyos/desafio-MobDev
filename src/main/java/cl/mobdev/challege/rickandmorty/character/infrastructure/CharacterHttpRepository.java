@@ -37,9 +37,25 @@ public class CharacterHttpRepository implements CharacterRepository{
             }       
         }
         
-        String idLocation = cModel.getOrigin().getUrl().split("location/")[1];
-        CharacterOrigin o= getOrigin.apply(Integer.parseInt(idLocation));
-        return cModel.toCharacterEntity(o);
+        Character rs;
+        if (cModel.getOrigin() == null || 
+                    cModel.getOrigin().getUrl() == null ||
+                        cModel.getOrigin().getUrl().isEmpty()) 
+        {
+            rs = cModel.toCharacterEntity();
+        }else {
+
+            String url = cModel.getOrigin().getUrl();
+            if (!url.contains("location/") || !url.split("location/")[1].matches("[0-9]+")){
+                throw new IllegalArgumentException("Character's location id no es numérico");
+            }
+
+            String idLocation = url.split("location/")[1];
+            CharacterOrigin o= getOrigin.apply(Integer.parseInt(idLocation));
+            rs = cModel.toCharacterEntity(o);
+        }
+        
+        return rs;
     }
     
 }

@@ -25,17 +25,27 @@ public class CharacterModel {
     private String   url;
     private Date    created;
 
+    public Character toCharacterEntity () {
+        return this.toCharacterEntityGenericData ();
+    }
 
     public Character toCharacterEntity (CharacterOrigin o) {
-       return  Character
-                .builder()
-                    .id(this.id)
-                    .name(this.name)
-                    .type(this.type)
-                    .status(this.status)
-                    .species(this.species) 
-                    .episodeCount(episode.length)
-                    .origin (o)
+       return  this.toCharacterEntityGenericData ()
+                    .toBuilder()
+                        .origin (o)
                     .build();
+    }
+
+    public Character toCharacterEntityGenericData () {
+        return Character
+                    .builder()
+                        .id(this.id)
+                        .name(this.name)
+                        .type(this.type)
+                        .status(this.status)
+                        .species(this.species) 
+                        .episodeCount(episode.length)
+                    .build();
+
     }
 }
